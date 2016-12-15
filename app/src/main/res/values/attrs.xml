@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GlobeFloatButtonStyle">
+        <attr name="float_width" format="dimension"/>
+        <attr name="float_height" format="dimension"/>
+    </declare-styleable>
+</resources>
