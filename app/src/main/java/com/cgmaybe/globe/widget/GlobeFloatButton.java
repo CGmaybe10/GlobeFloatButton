@@ -6,10 +6,10 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 import com.cgmaybe.globe.R;
@@ -33,6 +33,9 @@ public class GlobeFloatButton extends View {
     private int mScreenHeight;
     private long lastClickTime;
 
+    private int mTouchSlop;
+    private boolean mSlide = false;
+
     public GlobeFloatButton(Context context) {
         this(context, null);
     }
@@ -52,7 +55,7 @@ public class GlobeFloatButton extends View {
         mFloatHeight = typedArray.getDimensionPixelSize(R.styleable.GlobeFloatButtonStyle_float_height, 50);
         typedArray.recycle();
 
-        Log.d(TAG, "GlobeFloatButton: width = " + mFloatWidth + " height = " + mFloatHeight);
+        mTouchSlop = ViewConfiguration.get(context).getScaledPagingTouchSlop();
     }
 
     private void createView(Context context) {
@@ -92,10 +95,8 @@ public class GlobeFloatButton extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.d(TAG, "onMeasure: width = " + mFloatWidth + " height = " + mFloatHeight);
         setMeasuredDimension(mFloatWidth, mFloatHeight);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -112,7 +113,10 @@ public class GlobeFloatButton extends View {
                 if (intervalTime > 500) {
                     float mMoveStartX = event.getX();
                     float mMoveStartY = event.getY();
-                    if (Math.abs(mTouchStartX - mMoveStartX) > dp2px(1f) && Math.abs(mTouchStartY - mMoveStartY) > dp2px(1f)) {
+                    if (!mSlide && Math.abs(mTouchStartX - mMoveStartX) > mTouchSlop && Math.abs(mTouchStartY - mMoveStartY) > mTouchSlop) {
+                        mSlide = true;
+                    }
+                    if (mSlide) {
                         mWmParams.x = (int) (x - mTouchStartX);
                         mWmParams.y = (int) (y - mTouchStartY);
                         mWindowManager.updateViewLayout(this, mWmParams);
@@ -134,6 +138,7 @@ public class GlobeFloatButton extends View {
                 }
                 mWindowManager.updateViewLayout(this, mWmParams);
                 mTouchStartX = mTouchStartY = 0;
+                mSlide = false;
                 break;
         }
 
