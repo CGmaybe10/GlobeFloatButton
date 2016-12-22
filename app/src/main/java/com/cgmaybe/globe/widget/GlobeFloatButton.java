@@ -113,7 +113,7 @@ public class GlobeFloatButton extends View {
                 if (intervalTime > 500) {
                     float mMoveStartX = event.getX();
                     float mMoveStartY = event.getY();
-                    if (!mSlide && Math.abs(mTouchStartX - mMoveStartX) > mTouchSlop && Math.abs(mTouchStartY - mMoveStartY) > mTouchSlop) {
+                    if (!mSlide && (Math.abs(mTouchStartX - mMoveStartX) > mTouchSlop || Math.abs(mTouchStartY - mMoveStartY) > mTouchSlop)) {
                         mSlide = true;
                     }
                     if (mSlide) {
@@ -127,12 +127,12 @@ public class GlobeFloatButton extends View {
             case MotionEvent.ACTION_CANCEL:
                 lastClickTime = System.currentTimeMillis();
                 if (mWmParams.x >= mScreenWidth / 2) {
-                    mWmParams.x = mScreenWidth - dp2px(6f);
+                    mWmParams.x = mScreenWidth - dp2px(55f);
                 } else if (mWmParams.x < mScreenWidth / 2) {
                     mWmParams.x = dp2px(6f);
                 }
-                if (mWmParams.y >= mScreenHeight - dp2px(60f)) {
-                    mWmParams.y = mScreenHeight - dp2px(60f);
+                if (mWmParams.y >= mScreenHeight - dp2px(150f)) {
+                    mWmParams.y = mScreenHeight - dp2px(150f);
                 } else if (mWmParams.y < dp2px(60f)) {
                     mWmParams.y = dp2px(60f);
                 }
