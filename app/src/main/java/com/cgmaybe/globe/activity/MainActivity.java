@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.cgmaybe.globe.R;
 import com.cgmaybe.globe.service.MyAccessibilityService;
+import com.cgmaybe.globe.util.SettingsCompat;
 
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final String TAG = "moubiao";
     private static final int ACC_REQUEST_CODE = 10000;
     private static final int DEVICE_REQUEST_CODE = 10001;
-    private TextView mAccTV, mDeviceTv;
-    private Button mAccBT, mDeviceBT;
+    private TextView mPopTv, mAccTV, mDeviceTv;
+    private Button mPopBT, mAccBT, mDeviceBT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +44,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
+        mPopTv = (TextView) findViewById(R.id.pop_tv);
         mAccTV = (TextView) findViewById(R.id.acc_tv);
         mDeviceTv = (TextView) findViewById(R.id.device_tv);
 
+        mPopBT = (Button) findViewById(R.id.pop_bt);
         mAccBT = (Button) findViewById(R.id.accessibility_bt);
         mDeviceBT = (Button) findViewById(R.id.finish_bt);
     }
 
     private void setListener() {
+        mPopBT.setOnClickListener(this);
         mAccBT.setOnClickListener(this);
         mDeviceBT.setOnClickListener(this);
     }
 
     private void checkPermission() {
+        checkPopPermission();
         checkAccPermission();
         checkDevicePermission();
+    }
+
+    private void checkPopPermission() {
+        if (SettingsCompat.canDrawOverlays(this)) {
+            mPopTv.setText(R.string.pop_permission_grant);
+            mPopBT.setEnabled(false);
+        } else {
+            mPopTv.setText(R.string.pop_permission_no_grant);
+            mPopBT.setEnabled(true);
+        }
     }
 
     /**
@@ -96,8 +111,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        checkPopPermission();
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.pop_bt:
+                requestPopPermission();
+                break;
             case R.id.accessibility_bt:
                 requestAccPermission();
                 break;
@@ -107,6 +131,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private void requestPopPermission() {
+        SettingsCompat.manageDrawOverlays(this);
     }
 
     private void requestAccPermission() {

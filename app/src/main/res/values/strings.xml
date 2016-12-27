@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">FloatBT</string>
 
+    <string name="pop_description">开启悬浮窗权限才能使用悬浮球功能</string>
     <string name="acc_description">开启应用的无障碍权限才能使用悬浮球的返回键功能和HOME键功能</string>
     <string name="device_description">开启应用的设备管理器权限才能使用悬浮球的锁屏功能</string>
+    <string name="pop_permission_grant">(已获得悬浮窗权限)</string>
+    <string name="pop_permission_no_grant">(没有悬浮窗权限)</string>
     <string name="acc_permission_grant">(已获得无障碍权限)</string>
     <string name="acc_permission_not_grant">(没有无障碍权限)</string>
     <string name="device_permission_grant">(已获得设备管理权限)</string>
     <string name="device_permission_not_grant">(没有设备管理权限)</string>
+    <string name="pop_setting">获取悬浮窗权限</string>
     <string name="accessibility_setting">获取无障碍权限</string>
     <string name="device_manager_setting">获取设备管理器权限</string>
     <string name="device_manager_permission_tip">激活后才能使用锁屏功能</string>
