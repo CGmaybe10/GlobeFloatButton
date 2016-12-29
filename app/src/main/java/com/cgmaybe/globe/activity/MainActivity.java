@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 检查无障碍权限
      */
     private void checkAccPermission() {
+        if (mAccTV == null || mAccBT == null) {
+            return;
+        }
         AccessibilityManager manager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
         List<AccessibilityServiceInfo> list = AccessibilityManagerCompat.getEnabledAccessibilityServiceList(manager,
                 AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
@@ -99,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 检查设备管理权限
      */
     private void checkDevicePermission() {
+        if (mDeviceTv == null || mDeviceBT == null) {
+            return;
+        }
         DevicePolicyManager policyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         ComponentName componentName = new ComponentName(this, AdminReceiver.class);
         if (policyManager.isAdminActive(componentName)) {
